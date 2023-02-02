@@ -1,7 +1,8 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\search-server"
   ],
-  "SelectedNode": "\\C:\\Users\\il19-\\Source\\Repos\\cpp-search-server",
+  "SelectedNode": "\\search-server\\main.cpp",
   "PreviewInSolutionExplorer": false
 }
