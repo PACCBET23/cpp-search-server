@@ -245,7 +245,7 @@ private:
     }
 };
 
-// ==================== для примера =========================321
+// ==================== для примера ======================11===
 
 void PrintDocument(const Document& document) {
     cout << "{ "s
@@ -274,4 +274,4 @@ int main() {
         PrintDocument(document);
     }
     return 0;
-}
+}}
