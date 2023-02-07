@@ -6,6 +6,7 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <numeric>
 
 using namespace std;
 
@@ -98,6 +99,8 @@ public:
         return matched_documents;
     }
 
+
+
     vector<Document> FindTopDocuments(const string& raw_query, DocumentStatus input_status = DocumentStatus::ACTUAL) const {
         const auto helper = [&input_status](int document_id, DocumentStatus status, int rating) { return status == input_status; };
         return FindTopDocuments(raw_query, helper);
@@ -160,10 +163,7 @@ private:
         if (ratings.empty()) {
             return 0;
         }
-        int rating_sum = 0;
-        for (const int rating : ratings) {
-            rating_sum += rating;
-        }
+        int rating_sum = accumulate(ratings.begin(), ratings.end(), 0);
         return rating_sum / static_cast<int>(ratings.size());
     }
 
