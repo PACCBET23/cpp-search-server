@@ -10,6 +10,7 @@
 using namespace std;
 
 const int MAX_RESULT_DOCUMENT_COUNT = 5;
+const double ACCURACY_COMPARISON = 1e-6;
 
 string ReadLine() {
     string s;
@@ -84,7 +85,7 @@ public:
 
         sort(matched_documents.begin(), matched_documents.end(),
             [](const Document& lhs, const Document& rhs) {
-                if (abs(lhs.relevance - rhs.relevance) < 1e-6) {
+                if (abs(lhs.relevance - rhs.relevance) < ACCURACY_COMPARISON) {
                     return lhs.rating > rhs.rating;
                 }
                 else {
@@ -97,11 +98,7 @@ public:
         return matched_documents;
     }
 
-    vector<Document> FindTopDocuments(const string& raw_query) const {
-        return FindTopDocuments(raw_query, DocumentStatus::ACTUAL);
-    }
-
-    vector<Document> FindTopDocuments(const string& raw_query, DocumentStatus input_status) const {
+    vector<Document> FindTopDocuments(const string& raw_query, DocumentStatus input_status = DocumentStatus::ACTUAL) const {
         const auto helper = [&input_status](int document_id, DocumentStatus status, int rating) { return status == input_status; };
         return FindTopDocuments(raw_query, helper);
     }
@@ -245,7 +242,7 @@ private:
     }
 };
 
-// ==================== для примера ======================11===
+// ==================== для примера =========================
 
 void PrintDocument(const Document& document) {
     cout << "{ "s
@@ -274,4 +271,4 @@ int main() {
         PrintDocument(document);
     }
     return 0;
-}}
+}
