@@ -11,15 +11,15 @@ struct Document {
     int id = 0;
     double relevance = 0.0;
     int rating = 0;
-    
+
 };
 
-    enum class DocumentStatus {
+enum class DocumentStatus {
     ACTUAL,
     IRRELEVANT,
     BANNED,
     REMOVED,
-        
+
 };
 
 std::ostream& operator<<(std::ostream& out, const Document& document);

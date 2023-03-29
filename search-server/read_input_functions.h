@@ -2,6 +2,6 @@
 
 #include "document.h"
 #include <string>
- 
-std::string ReadLine(); 
+
+std::string ReadLine();
 int ReadLineWithNumber();

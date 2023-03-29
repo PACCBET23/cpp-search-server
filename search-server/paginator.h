@@ -27,9 +27,9 @@ public:
 private:
     Iterator first_, last_;
     size_t size_;
-    
-    
-    
+
+
+
 };
 template <typename Iterator>
 std::ostream& operator<<(std::ostream& out, const IteratorRange<Iterator>& range) {
