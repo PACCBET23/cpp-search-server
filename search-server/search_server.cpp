@@ -52,11 +52,9 @@ void SearchServer::RemoveDocument(int document_id) {
     if (document_ids_.find(document_id) != document_ids_.end()) {
         for (auto& [word, _] : ids_of_docs_to_word_freqs_[document_id]) {
             word_to_document_freqs_[word].erase(document_id);
-        }
-    }
-    else {
-        for (auto& [word, _] : ids_of_docs_to_word_freqs_[document_id]) {
-            word_to_document_freqs_.erase(word);
+            if (word_to_document_freqs_[word].empty()) {
+                word_to_document_freqs_.erase(word);
+            }
         }
     }
     documents_.erase(document_id);
