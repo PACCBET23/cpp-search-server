@@ -22,7 +22,7 @@ void FindTopDocuments(const SearchServer& search_server, const std::string& raw_
         std::cout << "Error is seaching: "s << e.what() << std::endl;
     }
 }
-
+/*
 void MatchDocuments(const SearchServer& search_server, const std::string& query) {
     try {
         std::cout << "Matching for request: "s << query << std::endl;
@@ -35,3 +35,4 @@ void MatchDocuments(const SearchServer& search_server, const std::string& query)
         std::cout << "Error in matchig request "s << query << ": "s << e.what() << std::endl;
     }
 }
+*/

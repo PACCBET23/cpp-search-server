@@ -3,7 +3,6 @@
 
 using namespace std::string_literals;
 
-
 std::ostream& operator<<(std::ostream& out, const Document& document) {
     out << "{ "s
         << "document_id = "s << document.id << ", "s
@@ -12,5 +11,3 @@ std::ostream& operator<<(std::ostream& out, const Document& document) {
         << document.rating << " }"s;
     return out;
 }
-
-
