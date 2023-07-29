@@ -25,10 +25,11 @@ void SearchServer::AddDocument(int document_id, std::string_view document, Docum
     }
 }
 
-
-
 std::vector<Document> SearchServer::FindTopDocuments(std::string_view raw_query, DocumentStatus status) const {
     return FindTopDocuments(std::execution::seq, raw_query, status);
+}
+std::vector<Document> SearchServer::FindTopDocuments(std::string_view raw_query) const {
+    return FindTopDocuments(std::execution::seq, raw_query, DocumentStatus::ACTUAL);
 }
 
 std::vector<Document> SearchServer::FindTopDocuments(const std::execution::sequenced_policy&,
@@ -41,10 +42,6 @@ std::vector<Document> SearchServer::FindTopDocuments(const std::execution::paral
     std::string_view raw_query,
     DocumentStatus status) const {
     return FindTopDocuments(std::execution::par, raw_query, [status](int document_id, DocumentStatus document_status, int rating) {return document_status == status; });
-}
-
-std::vector<Document> SearchServer::FindTopDocuments(std::string_view raw_query) const {
-    return FindTopDocuments(std::execution::seq, raw_query, DocumentStatus::ACTUAL);
 }
 
 std::vector<Document> SearchServer::FindTopDocuments(const std::execution::sequenced_policy&,
@@ -113,14 +110,16 @@ void SearchServer::RemoveDocument(const std::execution::parallel_policy&, int do
     documents_.erase(document_id);
 }
 
-std::tuple<std::vector<std::string_view>, DocumentStatus> SearchServer::MatchDocument(std::string_view raw_query,
+using MatchResult = std::tuple<std::vector<std::string_view>, DocumentStatus>;
+
+MatchResult SearchServer::MatchDocument(std::string_view raw_query,
     int document_id) const {
     return MatchDocument(std::execution::seq,
         raw_query,
         document_id);
 }
 
-std::tuple<std::vector<std::string_view>, DocumentStatus> SearchServer::MatchDocument(const std::execution::sequenced_policy&,
+MatchResult SearchServer::MatchDocument(const std::execution::sequenced_policy&,
     std::string_view raw_query,
     int document_id) const {
 
@@ -152,7 +151,7 @@ std::tuple<std::vector<std::string_view>, DocumentStatus> SearchServer::MatchDoc
     return { matched_words, documents_.at(document_id).status };
 }
 
-std::tuple<std::vector<std::string_view>, DocumentStatus> SearchServer::MatchDocument(const std::execution::parallel_policy&,
+MatchResult SearchServer::MatchDocument(const std::execution::parallel_policy&,
     std::string_view raw_query,
     int document_id) const {
     if ((document_id < 0) || (documents_.count(document_id) <= 0)) {

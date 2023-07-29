@@ -4,9 +4,9 @@ using namespace std::string_literals;
 
 void RemoveDuplicates(SearchServer& search_server) {
     std::set<int> id_remove;
-    std::set<std::set<std::string>> unique_word_plus_id;
+    std::set<std::set<std::string_view>> unique_word_plus_id;
     for (const int document_id : search_server) {
-        std::set<std::string> unique_words;
+        std::set<std::string_view> unique_words;
         for (auto& [word, _] : search_server.GetWordFrequencies(document_id)) {
             unique_words.insert(word);
         }
