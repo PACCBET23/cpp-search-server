@@ -1,22 +1,22 @@
-#pragma once
-#include "read_input_functions.h"
-#include "string_processing.h"
-#include "concurrent_map.h"
-#include "log_duration.h" 
+#pragma once 
+#include "read_input_functions.h" 
+#include "string_processing.h" 
+#include "concurrent_map.h" 
+#include "log_duration.h"  
 
-#include <tuple>
-#include <algorithm>
-#include <cmath>
-#include <iostream>
-#include <map>
-#include <set>
-#include <stdexcept>
-#include <execution>
-#include <string>
-#include <vector>
-#include <type_traits>
-#include <random>
-#include <future>  
+#include <tuple> 
+#include <algorithm> 
+#include <cmath> 
+#include <iostream> 
+#include <map> 
+#include <set> 
+#include <stdexcept> 
+#include <execution> 
+#include <string> 
+#include <vector> 
+#include <type_traits> 
+#include <random> 
+#include <future>   
 
 struct DocumentData {
     std::string data_string_;
@@ -37,7 +37,7 @@ public:
 
     void AddDocument(int document_id, std::string_view document, DocumentStatus status,
         const std::vector<int>& ratings);
-    
+
     template <typename DocumentPredicate>
     std::vector<Document> FindTopDocuments(std::string_view raw_query, DocumentPredicate document_predicate) const;
 
@@ -51,12 +51,9 @@ public:
     std::vector<Document> FindTopDocuments(const ExecutionPolicy& policy,
         std::string_view raw_query) const;
 
-    std::vector<Document> FindTopDocuments(const std::execution::sequenced_policy&, std::string_view raw_query, DocumentStatus status) const;
-    std::vector<Document> FindTopDocuments(const std::execution::parallel_policy&, std::string_view raw_query, DocumentStatus status) const;
-
-    std::vector<Document> FindTopDocuments(const std::execution::sequenced_policy&, std::string_view raw_query) const;
-    std::vector<Document> FindTopDocuments(const std::execution::parallel_policy&, std::string_view raw_query) const;
-
+    template <typename ExecutionPolicy>
+    std::vector<Document> FindTopDocuments(const ExecutionPolicy& policy, std::string_view raw_query, DocumentStatus status) const;
+    
     int GetDocumentCount() const;
 
     std::set<int> ::const_iterator begin() const;
@@ -107,7 +104,7 @@ private:
 
     Query ParseQuery(std::string_view& text) const;
 
-    // Existence required
+    // Existence required 
     double ComputeWordInverseDocumentFreq(std::string_view& word) const;
 
     template <typename DocumentPredicate>
@@ -142,6 +139,19 @@ std::vector<Document> SearchServer::FindTopDocuments(std::string_view raw_query,
     return FindTopDocuments(std::execution::seq,
         raw_query,
         document_predicate);
+}
+
+template <typename ExecutionPolicy>
+std::vector<Document> SearchServer::FindTopDocuments(const ExecutionPolicy& policy,
+    std::string_view raw_query,
+    DocumentStatus status) const {
+    return FindTopDocuments(policy, raw_query, [status](int document_id, DocumentStatus document_status, int rating) {return document_status == status; });
+}
+
+template <typename ExecutionPolicy>
+std::vector<Document> SearchServer::FindTopDocuments(const ExecutionPolicy& policy,
+    std::string_view raw_query) const {
+    return FindTopDocuments(policy, raw_query, DocumentStatus::ACTUAL);
 }
 
 template <typename DocumentPredicate, typename ExecutionPolicy>

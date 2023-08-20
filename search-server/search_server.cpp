@@ -1,6 +1,6 @@
-#include "search_server.h"
+#include "search_server.h" 
 
-#include <numeric>
+#include <numeric> 
 
 using namespace std::string_literals;
 
@@ -30,28 +30,6 @@ std::vector<Document> SearchServer::FindTopDocuments(std::string_view raw_query,
 }
 std::vector<Document> SearchServer::FindTopDocuments(std::string_view raw_query) const {
     return FindTopDocuments(std::execution::seq, raw_query, DocumentStatus::ACTUAL);
-}
-
-std::vector<Document> SearchServer::FindTopDocuments(const std::execution::sequenced_policy&,
-    std::string_view raw_query,
-    DocumentStatus status) const {
-    return FindTopDocuments(std::execution::seq, raw_query, [status](int document_id, DocumentStatus document_status, int rating) {return document_status == status; });
-}
-
-std::vector<Document> SearchServer::FindTopDocuments(const std::execution::parallel_policy&,
-    std::string_view raw_query,
-    DocumentStatus status) const {
-    return FindTopDocuments(std::execution::par, raw_query, [status](int document_id, DocumentStatus document_status, int rating) {return document_status == status; });
-}
-
-std::vector<Document> SearchServer::FindTopDocuments(const std::execution::sequenced_policy&,
-    std::string_view raw_query) const {
-    return FindTopDocuments(std::execution::seq, raw_query, DocumentStatus::ACTUAL);
-}
-
-std::vector<Document> SearchServer::FindTopDocuments(const std::execution::parallel_policy&,
-    std::string_view raw_query) const {
-    return FindTopDocuments(std::execution::par, raw_query, DocumentStatus::ACTUAL);
 }
 
 int SearchServer::GetDocumentCount() const {
@@ -193,7 +171,7 @@ bool SearchServer::IsStopWord(std::string_view word) const {
 }
 
 bool SearchServer::IsValidWord(std::string_view word) {
-    // A valid word must not contain special characters
+    // A valid word must not contain special characters 
     return std::none_of(word.begin(), word.end(), [](char c) {
         return c >= '\0' && c < ' ';
         });
@@ -265,7 +243,7 @@ SearchServer::Query SearchServer::ParseQuery(std::string_view& text) const {
     return result;
 }
 
-// Existence required
+// Existence required 
 double SearchServer::ComputeWordInverseDocumentFreq(std::string_view& word) const {
     return log(GetDocumentCount() * 1.0 / word_to_document_freqs_.at(word).size());
 }
