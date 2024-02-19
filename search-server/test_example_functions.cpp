@@ -22,17 +22,3 @@ void FindTopDocuments(const SearchServer& search_server, const std::string& raw_
         std::cout << "Error is seaching: "s << e.what() << std::endl;
     }
 }
-/*
-void MatchDocuments(const SearchServer& search_server, const std::string& query) {
-    try {
-        std::cout << "Matching for request: "s << query << std::endl;
-        for (int document_id : search_server) {
-            const auto [words, status] = search_server.MatchDocument(query, document_id);
-            PrintMatchDocumentResult(document_id, words, status);
-        }
-    }
-    catch (const std::exception& e) {
-        std::cout << "Error in matchig request "s << query << ": "s << e.what() << std::endl;
-    }
-}
-*/
